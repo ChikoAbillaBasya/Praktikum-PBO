@@ -4,21 +4,21 @@
  */
 package backend;
 
+import java.util.ArrayList;
+import java.sql.*;
+
 /**
  *
  * @author ASUS
  */
-import java.util.ArrayList;
-import java.sql.*;
 public class Anggota {
     private int idanggota;
     private String nama;
     private String alamat;
     private String telepon;
-    
-    
-    public Anggota(){
-        
+
+    public Anggota() {
+
     }
 
     public Anggota(String nama, String alamat, String telepon) {
@@ -59,53 +59,51 @@ public class Anggota {
         this.telepon = telepon;
     }
 
-    public Anggota getById(int id){
+    public Anggota getById(int id) {
         Anggota ang = new Anggota();
         ResultSet rs = DBHelper.selectQuery("SELECT * FROM anggota WHERE idanggota = '" + id + "'");
 
-        
-        try{
-            while(rs.next()){
+        try {
+            while (rs.next()) {
                 ang.setIdanggota(rs.getInt("idanggota"));
                 ang.setNama(rs.getString("nama"));
                 ang.setAlamat(rs.getString("alamat"));
                 ang.setTelepon(rs.getString("telepon"));
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return ang;
     }
-    
-    public ArrayList<Anggota> getAll(){
+
+    public ArrayList<Anggota> getAll() {
         ArrayList<Anggota> ListAnggota = new ArrayList();
-        
+
         ResultSet rs = DBHelper.selectQuery("SELECT * FROM anggota");
-        
-        try{
-            while(rs.next()){
+
+        try {
+            while (rs.next()) {
                 Anggota ang = new Anggota();
                 ang.setIdanggota(rs.getInt("idanggota"));
                 ang.setNama(rs.getString("nama"));
                 ang.setAlamat(rs.getString("alamat"));
                 ang.setTelepon(rs.getString("telepon"));
-                
+
                 ListAnggota.add(ang);
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return ListAnggota;
     }
-    
+
     public ArrayList<Anggota> search(String keyword) {
         ArrayList<Anggota> ListAnggota = new ArrayList<>();
 
         // Query untuk mencari data dalam tabel kategori
         String sql = "SELECT * FROM anggota WHERE " +
-                     "nama LIKE '%" + keyword + "%' " +
-                     "OR telepon LIKE '%" + keyword + "%'";
+                "nama LIKE '%" + keyword + "%' " +
+                "OR telepon LIKE '%" + keyword + "%'";
 
         ResultSet rs = DBHelper.selectQuery(sql);
 
@@ -125,13 +123,13 @@ public class Anggota {
 
         return ListAnggota; // Mengembalikan daftar kategori
     }
-    
+
     public void save() {
-        if (getById(idanggota).getIdanggota()== 0) {
+        if (getById(idanggota).getIdanggota() == 0) {
             String SQL = "INSERT INTO anggota (nama, alamat, telepon) VALUES ('"
-            + this.nama + "', '"
-            + this.alamat + "', '"
-            + this.telepon + "')";
+                    + this.nama + "', '"
+                    + this.alamat + "', '"
+                    + this.telepon + "')";
 
             this.idanggota = DBHelper.insertQueryGetId(SQL);
         } else {
@@ -147,5 +145,5 @@ public class Anggota {
     public void delete() {
         String SQL = "DELETE FROM anggota WHERE idanggota = '" + this.idanggota + "'";
         DBHelper.executeQuery(SQL);
-    }  
+    }
 }

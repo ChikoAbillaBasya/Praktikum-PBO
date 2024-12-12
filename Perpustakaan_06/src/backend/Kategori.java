@@ -4,19 +4,20 @@
  */
 package backend;
 
+import java.util.ArrayList;
+import java.sql.*;
+
 /**
  *
  * @author ASUS
  */
-import java.util.ArrayList;
-import java.sql.*;
 public class Kategori {
     private int idkategori;
     private String nama;
     private String keterangan;
-    
-    public Kategori(){
-        
+
+    public Kategori() {
+
     }
 
     public Kategori(String nama, String keterangan) {
@@ -47,54 +48,51 @@ public class Kategori {
     public void setKeterangan(String keterangan) {
         this.keterangan = keterangan;
     }
-    
-    
-    
-    public Kategori getById(int id){
+
+    public Kategori getById(int id) {
         Kategori kat = new Kategori();
         ResultSet rs = DBHelper.selectQuery("SELECT * FROM kategori" + "WHERE idkategori = '" + id + "'");
-        
-        try{
-            while(rs.next()){
+
+        try {
+            while (rs.next()) {
                 kat = new Kategori();
                 kat.setIdkategori(rs.getInt("idkategori"));
                 kat.setNama(rs.getString("nama"));
                 kat.setKeterangan(rs.getString("keterangan"));
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return kat;
     }
-    
-    public ArrayList<Kategori> getAll(){
+
+    public ArrayList<Kategori> getAll() {
         ArrayList<Kategori> ListKategori = new ArrayList();
-        
+
         ResultSet rs = DBHelper.selectQuery("SELECT * FROM kategori");
-        
-        try{
-            while(rs.next()){
+
+        try {
+            while (rs.next()) {
                 Kategori kat = new Kategori();
                 kat.setIdkategori(rs.getInt("idkategori"));
                 kat.setNama(rs.getString("nama"));
                 kat.setKeterangan(rs.getString("keterangan"));
-                
+
                 ListKategori.add(kat);
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return ListKategori;
     }
-    
+
     public ArrayList<Kategori> search(String keyword) {
         ArrayList<Kategori> ListKategori = new ArrayList<>();
 
         // Query untuk mencari data dalam tabel kategori
         String sql = "SELECT * FROM kategori WHERE " +
-                     "nama LIKE '%" + keyword + "%' " +
-                     "OR keterangan LIKE '%" + keyword + "%'";
+                "nama LIKE '%" + keyword + "%' " +
+                "OR keterangan LIKE '%" + keyword + "%'";
 
         ResultSet rs = DBHelper.selectQuery(sql);
 
@@ -113,7 +111,7 @@ public class Kategori {
 
         return ListKategori; // Mengembalikan daftar kategori
     }
-    
+
     public void save() {
         if (getById(idkategori).getIdkategori() == 0) {
             String SQL = "INSERT INTO kategori (nama, keterangan) VALUES ("
@@ -133,5 +131,10 @@ public class Kategori {
     public void delete() {
         String SQL = "DELETE FROM kategori WHERE idkategori = '" + this.idkategori + "'";
         DBHelper.executeQuery(SQL);
+    }
+
+    @Override
+    public String toString() {
+        return nama;
     }
 }

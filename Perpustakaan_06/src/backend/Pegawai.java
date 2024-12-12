@@ -1,6 +1,12 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package backend;
+
 import java.util.ArrayList;
 import java.sql.*;
+
 /**
  *
  * @author ASUS
@@ -81,14 +87,14 @@ public class Pegawai {
     public void setPassword(String password) {
         this.password = password;
     }
-    
-    public Pegawai getById(int id){
+
+    public Pegawai getById(int id) {
         Pegawai peg = new Pegawai();
-        ResultSet rs = DBHelper.selectQuery("SELECT * FROM pegawai " 
+        ResultSet rs = DBHelper.selectQuery("SELECT * FROM pegawai "
                 + "WHERE idpegawai = '" + id + "'");
 
         try {
-            while(rs.next()){
+            while (rs.next()) {
                 peg = new Pegawai();
                 peg.setIdPegawai(rs.getInt("idpegawai"));
                 peg.setNama(rs.getString("nama"));
@@ -98,52 +104,18 @@ public class Pegawai {
                 peg.setUsername(rs.getString("username"));
                 peg.setPassword(rs.getString("password"));
             }
-        } 
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-       return peg;
+        return peg;
     }
-    
-    public ArrayList<Pegawai> getAll(){
+
+    public ArrayList<Pegawai> getAll() {
         ArrayList<Pegawai> ListPegawai = new ArrayList();
         ResultSet rs = DBHelper.selectQuery("SELECT * FROM pegawai");
-        
-        try {
-            while(rs.next()){
-                Pegawai peg = new Pegawai();
-                peg.setIdPegawai(rs.getInt("idpegawai"));
-                peg.setNama(rs.getString("nama"));
-                peg.setAlamat(rs.getString("alamat"));
-                peg.setNoTelp(rs.getString("notelp"));
-                peg.setJabatan(rs.getString("jabatan"));
-                peg.setUsername(rs.getString("username"));
-                peg.setPassword(rs.getString("password"));
-                ListPegawai.add(peg);
-            }
-        } 
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ListPegawai;
-    }
-    
-    public ArrayList<Pegawai> search(String keyword){
-         ArrayList<Pegawai> ListPegawai = new ArrayList<>();
 
-          String sql = "SELECT * FROM pegawai WHERE "
-            + "nama LIKE '%" + keyword + "%' "
-            + "OR nama LIKE '%" + keyword + "%' "
-            + "OR alamat LIKE '%" + keyword + "%' "
-            + "OR notelp LIKE '%" + keyword + "%' "
-            + "OR jabatan LIKE '%" + keyword + "%' "
-            + "OR username LIKE '%" + keyword + "%' "
-            + "OR password LIKE '%" + keyword + "%'";
-            
-         ResultSet rs = DBHelper.selectQuery(sql);
-         
-          try {
-            while(rs.next()){
+        try {
+            while (rs.next()) {
                 Pegawai peg = new Pegawai();
                 peg.setIdPegawai(rs.getInt("idpegawai"));
                 peg.setNama(rs.getString("nama"));
@@ -152,47 +124,78 @@ public class Pegawai {
                 peg.setJabatan(rs.getString("jabatan"));
                 peg.setUsername(rs.getString("username"));
                 peg.setPassword(rs.getString("password"));
-                
                 ListPegawai.add(peg);
             }
-        } 
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return ListPegawai;
     }
-    
-   public void save() {
-        if (getById(idPegawai).getIdPegawai()== 0) {
+
+    public ArrayList<Pegawai> search(String keyword) {
+        ArrayList<Pegawai> ListPegawai = new ArrayList<>();
+
+        String sql = "SELECT * FROM pegawai WHERE "
+                + "nama LIKE '%" + keyword + "%' "
+                + "OR nama LIKE '%" + keyword + "%' "
+                + "OR alamat LIKE '%" + keyword + "%' "
+                + "OR notelp LIKE '%" + keyword + "%' "
+                + "OR jabatan LIKE '%" + keyword + "%' "
+                + "OR username LIKE '%" + keyword + "%' "
+                + "OR password LIKE '%" + keyword + "%'";
+
+        ResultSet rs = DBHelper.selectQuery(sql);
+
+        try {
+            while (rs.next()) {
+                Pegawai peg = new Pegawai();
+                peg.setIdPegawai(rs.getInt("idpegawai"));
+                peg.setNama(rs.getString("nama"));
+                peg.setAlamat(rs.getString("alamat"));
+                peg.setNoTelp(rs.getString("notelp"));
+                peg.setJabatan(rs.getString("jabatan"));
+                peg.setUsername(rs.getString("username"));
+                peg.setPassword(rs.getString("password"));
+
+                ListPegawai.add(peg);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ListPegawai;
+    }
+
+    public void save() {
+        if (getById(idPegawai).getIdPegawai() == 0) {
             String SQL = "INSERT INTO pegawai (nama, alamat, notelp, jabatan, username, password) VALUES ("
-            + "'" + this.nama + "', "
-            + "'" + this.alamat + "', "
-            + "'" + this.noTelp + "', "
-            + "'" + this.jabatan + "', "
-            + "'" + this.username + "', "
-            + "'" + this.password + "'"
-            + ")";
+                    + "'" + this.nama + "', "
+                    + "'" + this.alamat + "', "
+                    + "'" + this.noTelp + "', "
+                    + "'" + this.jabatan + "', "
+                    + "'" + this.username + "', "
+                    + "'" + this.password + "'"
+                    + ")";
 
             this.idPegawai = DBHelper.insertQueryGetId(SQL);
         } else {
             String SQL = "UPDATE pegawai SET "
-            + "nama = '" + this.nama + "', "
-            + "alamat = '" + this.alamat + "', "
-            + "notelp = '" + this.noTelp + "', "
-            + "jabatan = '" + this.jabatan + "', "
-            + "username = '" + this.username + "', "
-            + "password = '" + this.password + "' "
-            + "WHERE idpegawai = '" + this.idPegawai + "'";
+                    + "nama = '" + this.nama + "', "
+                    + "alamat = '" + this.alamat + "', "
+                    + "notelp = '" + this.noTelp + "', "
+                    + "jabatan = '" + this.jabatan + "', "
+                    + "username = '" + this.username + "', "
+                    + "password = '" + this.password + "' "
+                    + "WHERE idpegawai = '" + this.idPegawai + "'";
 
-            DBHelper.executeQuery(SQL); 
+            DBHelper.executeQuery(SQL);
         }
     }
-    
-    public void delete(){
+
+    public void delete() {
         String SQL = "DELETE FROM pegawai WHERE idpegawai = '" + this.idPegawai + "'";
         DBHelper.executeQuery(SQL);
     }
-    
+
     public boolean isUsernameExists(String username) {
         boolean result = false;
         ResultSet rs = DBHelper.selectQuery("SELECT * FROM pegawai WHERE username = '" + username + "'");
@@ -206,4 +209,8 @@ public class Pegawai {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return nama;
+    }
 }
