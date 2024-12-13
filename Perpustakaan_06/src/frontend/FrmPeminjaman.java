@@ -8,6 +8,8 @@ import backend.*;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.DefaultComboBoxModel;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
 
 /**
@@ -23,41 +25,50 @@ public class FrmPeminjaman extends javax.swing.JFrame {
         initComponents();
         kosongkanForm();
         tampilkanData();
-        tampilkancmbidpegawai();
+        setTanggalPinjam();
     }
 
     public void kosongkanForm() {
-        txtIdpeminjaman.setText("0");
+        txtIdPeminjaman.setText("0");
+        txtIdPegawai.setText("");
         txtIdAnggota.setText("");
         txtIdBuku.setText("");
-        cmbIdPegawai.setSelectedIndex(0);
-        txtTanggalPinjam.setText("");
+        setTanggalPinjam();
         txtTanggalKembali.setText("");
-        lblNamaAnggota.setText("-");
-        lblJudulBuku.setText("-");
+        lblNamaAnggota.setText("...");
+        lblNamaPegawai.setText("...");
+        lblNamaBuku.setText("...");
+    }
+
+    private void setTanggalPinjam() {
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String formattedDate = today.format(formatter);
+        txtTanggalPinjam.setText(formattedDate);
+    }
+
+    private void setTanggalKembali() {
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String formattedDate = today.format(formatter);
+        txtTanggalKembali.setText(formattedDate);
     }
 
     public void tampilkanData() {
-        String[] kolom = { "ID", "Nama Anggota", "Judul Buku", "Tanggal Pinjam", "Tanggal Kembali", "id Pegawai" };
+        String[] kolom = { "ID Peminjaman", "Pegawai", "Anggota", "Buku", "Tanggal Pinjam", "Tanggal Kembali" };
         ArrayList<Peminjaman> list = new Peminjaman().getAll();
         Object rowData[] = new Object[6];
-
         tblPeminjaman.setModel(new DefaultTableModel(new Object[][] {}, kolom));
 
-        for (Peminjaman pinjam : list) {
-            rowData[0] = pinjam.getIdPeminjaman();
-            rowData[1] = pinjam.getAnggota().getNama();
-            rowData[2] = pinjam.getBuku().getIdbuku();
-            rowData[3] = pinjam.getTanggalPinjam();
-            rowData[4] = pinjam.getTanggalKembali();
-            rowData[5] = pinjam.getPegawai().getIdPegawai();
-
+        for (int i = 0; i < list.size(); i++) {
+            rowData[0] = list.get(i).getIdPeminjaman();
+            rowData[1] = list.get(i).getPegawai().getNama();
+            rowData[2] = list.get(i).getAnggota().getNama();
+            rowData[3] = list.get(i).getBuku().getJudul();
+            rowData[4] = list.get(i).getTanggalPinjam();
+            rowData[5] = list.get(i).getTanggalKembali() != null ? list.get(i).getTanggalKembali() : "-";
             ((DefaultTableModel) tblPeminjaman.getModel()).addRow(rowData);
         }
-    }
-
-    public void tampilkancmbidpegawai() {
-        cmbIdPegawai.setModel(new DefaultComboBoxModel(new Pegawai().getAll().toArray()));
     }
 
     /**
@@ -70,110 +81,95 @@ public class FrmPeminjaman extends javax.swing.JFrame {
     // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton5 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTree1 = new javax.swing.JTree();
-        jLabel12 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txtIdpeminjaman = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        txtIdAnggota = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txtIdBuku = new javax.swing.JTextField();
-        btnCariAng = new javax.swing.JButton();
-        btnCariBuku = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
-        txtTanggalPinjam = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
-        btnSimpan = new javax.swing.JButton();
-        btnTambahBaruu = new javax.swing.JButton();
-        btnHapus = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblPeminjaman = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
-        txtTanggalKembali = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        txtIdPeminjaman = new javax.swing.JTextField();
+        txtIdAnggota = new javax.swing.JTextField();
+        txtIdBuku = new javax.swing.JTextField();
+        txtTanggalPinjam = new javax.swing.JTextField();
         lblNamaAnggota = new javax.swing.JLabel();
-        lblJudulBuku = new javax.swing.JLabel();
-        txtupdate = new javax.swing.JButton();
-        jLabel13 = new javax.swing.JLabel();
-        cmbIdPegawai = new javax.swing.JComboBox<>();
+        jLabel6 = new javax.swing.JLabel();
+        txtIdPegawai = new javax.swing.JTextField();
+        lblNamaBuku = new javax.swing.JLabel();
+        lblNamaPegawai = new javax.swing.JLabel();
+        btnSimpan = new javax.swing.JButton();
+        btnTambahBaru = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblPeminjaman = new javax.swing.JTable();
+        jLabel5 = new javax.swing.JLabel();
+        txtTanggalKembali = new javax.swing.JTextField();
+        btnConfirm = new javax.swing.JButton();
+        btnCariAnggota = new javax.swing.JButton();
+        label1 = new java.awt.Label();
 
-        jButton5.setText("jButton5");
-
-        jButton7.setText("jButton7");
-
-        jScrollPane2.setViewportView(jTree1);
-
-        jLabel12.setText("jLabel12");
-
-        jButton1.setText("jButton1");
-
-        jButton3.setText("jButton3");
-
-        jButton4.setText("jButton4");
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Form Peminjaman");
+        jLabel1.setText("ID");
 
-        jLabel2.setText("ID");
-
-        txtIdpeminjaman.setEditable(false);
-        txtIdpeminjaman.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIdpeminjamanActionPerformed(evt);
-            }
-        });
-
-        jLabel6.setText("ID Anggota");
-
-        txtIdAnggota.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIdAnggotaActionPerformed(evt);
-            }
-        });
+        jLabel2.setText("ID Anggota");
 
         jLabel3.setText("ID Buku");
+
+        jLabel4.setText("Tanggal Pinjam");
+
+        txtIdPeminjaman.setEnabled(false);
+        txtIdPeminjaman.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIdPeminjamanActionPerformed(evt);
+            }
+        });
+
+        txtIdAnggota.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtIdAnggotaKeyReleased(evt);
+            }
+        });
 
         txtIdBuku.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtIdBukuActionPerformed(evt);
             }
         });
-
-        btnCariAng.setText("Cari");
-        btnCariAng.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCariAngActionPerformed(evt);
+        txtIdBuku.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtIdBukuKeyReleased(evt);
             }
         });
 
-        btnCariBuku.setText("Cari");
-        btnCariBuku.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCariBukuActionPerformed(evt);
-            }
-        });
-
-        jLabel7.setText("Tanggal Pinjam");
-
+        txtTanggalPinjam.setEnabled(false);
         txtTanggalPinjam.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtTanggalPinjamActionPerformed(evt);
             }
         });
 
-        jLabel8.setFont(new java.awt.Font("sansserif", 0, 10)); // NOI18N
-        jLabel8.setText("Format: YYYY/MM/DD");
+        lblNamaAnggota.setText("(Nama Anggota)");
+
+        jLabel6.setText("ID Pegawai");
+
+        txtIdPegawai.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIdPegawaiActionPerformed(evt);
+            }
+        });
+        txtIdPegawai.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtIdPegawaiKeyReleased(evt);
+            }
+        });
+
+        lblNamaBuku.setText("(Judul Buku)");
+
+        lblNamaPegawai.setText("(Nama Pegawai)");
+        lblNamaPegawai.setToolTipText("");
 
         btnSimpan.setText("Simpan");
         btnSimpan.addActionListener(new java.awt.event.ActionListener() {
@@ -182,17 +178,10 @@ public class FrmPeminjaman extends javax.swing.JFrame {
             }
         });
 
-        btnTambahBaruu.setText("Tambah Baru");
-        btnTambahBaruu.addActionListener(new java.awt.event.ActionListener() {
+        btnTambahBaru.setText("Tambah Baru");
+        btnTambahBaru.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTambahBaruuActionPerformed(evt);
-            }
-        });
-
-        btnHapus.setText("Hapus");
-        btnHapus.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHapusActionPerformed(evt);
+                btnTambahBaruActionPerformed(evt);
             }
         });
 
@@ -210,406 +199,353 @@ public class FrmPeminjaman extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblPeminjamanMouseClicked(evt);
             }
-
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                tblPeminjamanMouseEntered(evt);
-            }
         });
-        jScrollPane1.setViewportView(tblPeminjaman);
+        jScrollPane2.setViewportView(tblPeminjaman);
 
-        jLabel4.setText("Tanggal Kembali");
+        jLabel5.setText("Tanggal Kembali");
 
         txtTanggalKembali.setEnabled(false);
-        txtTanggalKembali.addActionListener(new java.awt.event.ActionListener() {
+
+        btnConfirm.setText("Update");
+        btnConfirm.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTanggalKembaliActionPerformed(evt);
+                btnConfirmActionPerformed(evt);
             }
         });
 
-        jLabel9.setFont(new java.awt.Font("sansserif", 0, 10)); // NOI18N
-        jLabel9.setText("Format: YYYY/MM/DD");
-
-        lblNamaAnggota.setText("Nama Anggota");
-
-        lblJudulBuku.setText("Nama Buku");
-
-        txtupdate.setText("Update");
-        txtupdate.addActionListener(new java.awt.event.ActionListener() {
+        btnCariAnggota.setText("Cari");
+        btnCariAnggota.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtupdateActionPerformed(evt);
+                btnCariAnggotaActionPerformed(evt);
             }
         });
 
-        jLabel13.setText("Nama Pegawai");
-
-        cmbIdPegawai.setModel(
-                new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cmbIdPegawai.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbIdPegawaiActionPerformed(evt);
-            }
-        });
+        label1.setAlignment(java.awt.Label.CENTER);
+        label1.setBackground(new java.awt.Color(102, 102, 255));
+        label1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        label1.setText("FORM PEMINJAMAN");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
+                                .addGap(16, 16, 16)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout
-                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabel7)
-                                                        .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(jLabel4)
-                                                                .addPreferredGap(
-                                                                        javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                                .addComponent(txtTanggalKembali,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE, 142,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jLabel9)
+                                                .addComponent(btnSimpan)
                                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout
                                                         .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel6)
                                                         .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(btnTambahBaruu)
+                                                                .addComponent(btnTambahBaru)
                                                                 .addPreferredGap(
                                                                         javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(btnHapus,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE, 75,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                        .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(btnSimpan,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE, 75,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addPreferredGap(
-                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(txtupdate))
-                                                        .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(jLabel13)
-                                                                .addGap(18, 18, 18)
-                                                                .addComponent(cmbIdPegawai,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE, 146,
-                                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                .addComponent(btnConfirm))
                                                         .addGroup(layout.createSequentialGroup()
                                                                 .addGroup(layout.createParallelGroup(
                                                                         javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addComponent(jLabel2)
-                                                                        .addComponent(jLabel6)
-                                                                        .addComponent(jLabel3,
-                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                41,
-                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                .addGap(43, 43, 43)
+                                                                        .addGroup(layout.createSequentialGroup()
+                                                                                .addGroup(layout.createParallelGroup(
+                                                                                        javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                        .addComponent(jLabel4,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                88,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                        .addGroup(layout
+                                                                                                .createParallelGroup(
+                                                                                                        javax.swing.GroupLayout.Alignment.TRAILING,
+                                                                                                        false)
+                                                                                                .addComponent(jLabel3,
+                                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                        62,
+                                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                .addComponent(jLabel1,
+                                                                                                        javax.swing.GroupLayout.Alignment.LEADING))
+                                                                                        .addComponent(jLabel5,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                96,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                .addPreferredGap(
+                                                                                        javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                                                                        .addGroup(
+                                                                                javax.swing.GroupLayout.Alignment.TRAILING,
+                                                                                layout.createSequentialGroup()
+                                                                                        .addComponent(jLabel2)
+                                                                                        .addGap(56, 56, 56)))
                                                                 .addGroup(layout.createParallelGroup(
                                                                         javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addComponent(txtIdpeminjaman,
+                                                                        .addComponent(txtTanggalKembali,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                74,
+                                                                                90,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                         .addGroup(layout.createSequentialGroup()
-                                                                                .addComponent(txtTanggalPinjam,
-                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                        139,
-                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addGroup(layout.createParallelGroup(
+                                                                                        javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                        .addComponent(txtIdAnggota,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                90,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                        .addComponent(txtIdPegawai,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                90,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                        .addComponent(txtIdPeminjaman,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                90,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                        .addComponent(txtIdBuku,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                90,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                                 .addPreferredGap(
-                                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                .addComponent(jLabel8))
-                                                                        .addGroup(layout.createSequentialGroup()
+                                                                                        javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                                                 .addGroup(layout.createParallelGroup(
                                                                                         javax.swing.GroupLayout.Alignment.LEADING)
                                                                                         .addGroup(layout
                                                                                                 .createSequentialGroup()
-                                                                                                .addComponent(txtIdBuku,
+                                                                                                .addComponent(
+                                                                                                        btnCariAnggota,
                                                                                                         javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                                        74,
+                                                                                                        54,
                                                                                                         javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                                 .addPreferredGap(
                                                                                                         javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                                                 .addComponent(
-                                                                                                        btnCariBuku,
+                                                                                                        lblNamaAnggota,
                                                                                                         javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                                        59,
-                                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                                .addPreferredGap(
-                                                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                .addComponent(
-                                                                                                        lblJudulBuku))
-                                                                                        .addGroup(layout
-                                                                                                .createSequentialGroup()
-                                                                                                .addComponent(
-                                                                                                        txtIdAnggota,
-                                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                                        74,
-                                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                                .addPreferredGap(
-                                                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                .addComponent(
-                                                                                                        btnCariAng,
-                                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                                        59,
-                                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                                .addPreferredGap(
-                                                                                                        javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                .addComponent(
-                                                                                                        lblNamaAnggota))
-                                                                                        .addGroup(layout
-                                                                                                .createSequentialGroup()
-                                                                                                .addGap(51, 51, 51)
-                                                                                                .addComponent(jLabel1,
-                                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                                        165,
-                                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                                                .addGap(76, 76, 76)
-                                                                                .addComponent(jLabel5,
-                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                        37,
-                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                                                .addGap(0, 0, Short.MAX_VALUE))
+                                                                                                        218,
+                                                                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                        .addComponent(lblNamaPegawai,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                317,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                        .addComponent(lblNamaBuku,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                                317,
+                                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                                        .addComponent(txtTanggalPinjam,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                90,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                                .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
                                                 layout.createSequentialGroup()
                                                         .addGap(0, 0, Short.MAX_VALUE)
-                                                        .addComponent(jScrollPane1,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE, 492,
-                                                                javax.swing.GroupLayout.PREFERRED_SIZE)))));
+                                                        .addComponent(jScrollPane2,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE, 632,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(label1, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap()));
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jLabel1)
+                                .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel1)
+                                        .addComponent(txtIdPeminjaman, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel6)
+                                        .addComponent(txtIdPegawai, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblNamaPegawai))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel2)
-                                        .addComponent(txtIdpeminjaman, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(15, 15, 15)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(txtIdAnggota, javax.swing.GroupLayout.PREFERRED_SIZE,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(btnCariAng)
-                                        .addComponent(jLabel6)
-                                        .addComponent(jLabel5)
-                                        .addComponent(lblNamaAnggota, javax.swing.GroupLayout.PREFERRED_SIZE, 23,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(12, 12, 12)
+                                        .addComponent(lblNamaAnggota)
+                                        .addComponent(btnCariAnggota))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel3)
                                         .addComponent(txtIdBuku, javax.swing.GroupLayout.PREFERRED_SIZE,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(btnCariBuku)
-                                        .addComponent(jLabel3)
-                                        .addComponent(lblJudulBuku))
+                                        .addComponent(lblNamaBuku))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel7)
-                                        .addComponent(txtTanggalPinjam, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel8))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel4)
-                                        .addComponent(txtTanggalKembali, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel9))
-                                .addGap(9, 9, 9)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel13)
-                                        .addComponent(cmbIdPegawai, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        .addComponent(txtTanggalPinjam, javax.swing.GroupLayout.PREFERRED_SIZE,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(btnSimpan)
-                                        .addComponent(txtupdate))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(btnTambahBaruu)
-                                        .addComponent(btnHapus))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 195,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)));
+                                        .addComponent(jLabel5)
+                                        .addComponent(txtTanggalKembali, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(btnSimpan)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(btnTambahBaru)
+                                        .addComponent(btnConfirm, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 203,
+                                        javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(14, 14, 14)));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtIdpeminjamanActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtIdpeminjamanActionPerformed
-        // TODO add your handling code here:
-    }// GEN-LAST:event_txtIdpeminjamanActionPerformed
+    private void btnTambahBaruActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnTambahBaruActionPerformed
+        kosongkanForm();
+        txtIdAnggota.setEnabled(true);
+        txtIdPegawai.setEnabled(true);
+        txtIdBuku.setEnabled(true);
+    }// GEN-LAST:event_btnTambahBaruActionPerformed
 
-    private void txtIdAnggotaActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtIdAnggotaActionPerformed
+    private void txtIdPeminjamanActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtIdPeminjamanActionPerformed
         // TODO add your handling code here:
-    }// GEN-LAST:event_txtIdAnggotaActionPerformed
-
-    private void btnCariAngActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnCariAngActionPerformed
-        if (!txtIdAnggota.getText().isEmpty()) {
-            Anggota anggota = new Anggota().getById(Integer.parseInt(txtIdAnggota.getText()));
-            if (anggota != null && anggota.getIdanggota() != 0) {
-                lblNamaAnggota.setText(anggota.getNama());
-            }
-        } // TODO add your handling code here:
-    }// GEN-LAST:event_btnCariAngActionPerformed
-
-    private void btnCariBukuActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnCariBukuActionPerformed
-        if (!txtIdBuku.getText().isEmpty()) {
-            Buku buku = new Buku().getById(Integer.parseInt(txtIdBuku.getText()));
-            if (buku != null && buku.getIdbuku() != 0) {
-                lblJudulBuku.setText(buku.getJudul());
-            }
-        }
-        // TODO add your handling code here:
-    }// GEN-LAST:event_btnCariBukuActionPerformed
+    }// GEN-LAST:event_txtIdPeminjamanActionPerformed
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnSimpanActionPerformed
-        try {
-            // Cek apakah input ID Anggota dan ID Buku valid
-            String idAnggotaStr = txtIdAnggota.getText().trim();
-            String idBukuStr = txtIdBuku.getText().trim();
+        Peminjaman peminjaman = new Peminjaman();
+        peminjaman.setIdPeminjaman(Integer.parseInt(txtIdPeminjaman.getText()));
+        peminjaman.getPegawai().setIdPegawai(Integer.parseInt(txtIdPegawai.getText()));
+        peminjaman.getAnggota().setIdanggota(Integer.parseInt(txtIdAnggota.getText()));
+        peminjaman.getBuku().setIdbuku(Integer.parseInt(txtIdBuku.getText()));
 
-            // Validasi apakah ID Anggota atau ID Buku kosong
-            if (idAnggotaStr.isEmpty() || idBukuStr.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "ID Anggota dan ID Buku tidak boleh kosong.", "Peringatan",
-                        JOptionPane.WARNING_MESSAGE);
-                return;
-            }
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = today.format(formatter);
+        peminjaman.setTanggalPinjam(formattedDate);
 
-            int idAnggota = Integer.parseInt(idAnggotaStr);
-            int idBuku = Integer.parseInt(idBukuStr);
-
-            // Cek apakah Tanggal Pinjam tidak kosong
-            String tanggalPinjam = txtTanggalPinjam.getText().trim();
-            if (tanggalPinjam.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Tanggal Pinjam tidak boleh kosong.", "Peringatan",
-                        JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            // Inisialisasi objek peminjaman
-            Peminjaman pin = new Peminjaman();
-            pin.getAnggota().setIdanggota(idAnggota);
-            pin.getBuku().setIdbuku(idBuku);
-            pin.setPegawai((Pegawai) cmbIdPegawai.getSelectedItem());
-
-            // Ambil dan set Tanggal Pinjam dan Tanggal Kembali
-            pin.setTanggalPinjam(tanggalPinjam);
-            pin.setTanggalKembali(txtTanggalKembali.getText().trim());
-
-            // Simpan data peminjaman
-            pin.save();
-
-            // Tampilkan pesan sukses
-            JOptionPane.showMessageDialog(this, "Data peminjaman berhasil disimpan.", "Sukses",
-                    JOptionPane.INFORMATION_MESSAGE);
-
-            // Update ID Peminjaman pada field input
-            txtIdpeminjaman.setText(Integer.toString(pin.getIdPeminjaman()));
-
-            // Refresh data di tabel
-            tampilkanData();
-            kosongkanForm();
-
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Input ID harus berupa angka yang valid.", "Kesalahan Input",
-                    JOptionPane.ERROR_MESSAGE);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Terjadi kesalahan saat menyimpan data peminjaman.", "Kesalahan",
-                    JOptionPane.ERROR_MESSAGE);
-            e.getMessage();
-        }
-        // TODO add your handling code here:
+        peminjaman.save();
+        txtIdPeminjaman.setText(Integer.toString(peminjaman.getIdPeminjaman()));
+        tampilkanData();
     }// GEN-LAST:event_btnSimpanActionPerformed
 
-    private void btnTambahBaruuActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnTambahBaruuActionPerformed
-        kosongkanForm(); // TODO add your handling code here:
-    }// GEN-LAST:event_btnTambahBaruuActionPerformed
-
-    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnHapusActionPerformed
+    private void tblPeminjamanMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_tblPeminjamanMouseClicked
         DefaultTableModel model = (DefaultTableModel) tblPeminjaman.getModel();
         int row = tblPeminjaman.getSelectedRow();
-
-        Peminjaman peminjaman = new Peminjaman().getById(Integer.parseInt(model.getValueAt(row, 0).toString()));
-        peminjaman.delete();
-        kosongkanForm();
-        tampilkanData();
-        // TODO add your handling code here:
-    }// GEN-LAST:event_btnHapusActionPerformed
+        Peminjaman peminjaman = new Peminjaman();
+        peminjaman = peminjaman.getById(Integer.parseInt(model.getValueAt(row, 0).toString()));
+        txtIdPeminjaman.setText(String.valueOf(peminjaman.getIdPeminjaman()));
+        txtIdPegawai.setText(String.valueOf(peminjaman.getPegawai().getIdPegawai()));
+        txtIdAnggota.setText(String.valueOf(peminjaman.getAnggota().getIdanggota()));
+        txtIdBuku.setText(String.valueOf(peminjaman.getBuku().getIdbuku()));
+        txtTanggalPinjam.setText(peminjaman.getTanggalPinjam());
+        txtIdAnggota.setEnabled(false);
+        txtIdPegawai.setEnabled(false);
+        txtIdBuku.setEnabled(false);
+        setTanggalKembali();
+    }// GEN-LAST:event_tblPeminjamanMouseClicked
 
     private void txtIdBukuActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtIdBukuActionPerformed
         // TODO add your handling code here:
     }// GEN-LAST:event_txtIdBukuActionPerformed
 
-    private void tblPeminjamanMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_tblPeminjamanMouseClicked
-        DefaultTableModel model = (DefaultTableModel) tblPeminjaman.getModel();
-        int row = tblPeminjaman.getSelectedRow();
-        Peminjaman pin = new Peminjaman();
+    private void txtIdPegawaiActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtIdPegawaiActionPerformed
+        // TODO add your handling code here:
+    }// GEN-LAST:event_txtIdPegawaiActionPerformed
 
-        if (row >= 0) {
-            pin = pin.getById(Integer.parseInt(model.getValueAt(row, 0).toString()));
-
-            txtIdpeminjaman.setText(String.valueOf(pin.getIdPeminjaman()));
-            txtIdAnggota.setText(String.valueOf(pin.getAnggota().getIdanggota()));
-            txtIdBuku.setText(String.valueOf(pin.getBuku().getIdbuku()));
-            txtTanggalPinjam.setText(pin.getTanggalPinjam());
-            txtTanggalKembali.setText(pin.getTanggalKembali());
-            cmbIdPegawai.getModel().setSelectedItem(pin.getPegawai());
-
-            txtIdpeminjaman.setEnabled(false); // ID Peminjaman hanya dibaca (disabled)
-            txtIdAnggota.setEnabled(false); // ID Anggota hanya dibaca (disabled)
-            txtIdBuku.setEnabled(false); // ID Buku hanya dibaca (disabled)
-            txtTanggalPinjam.setEnabled(false); // Tanggal Pinjam hanya dibaca (disabled)
-            txtTanggalKembali.setEnabled(true); // Tanggal Kembali diaktifkan
-
-            txtupdate.setEnabled(true);
-            btnSimpan.setEnabled(false);// Tombol Update diaktifkan
-        } else {
-            // Jika tidak ada baris yang dipilih, tombol Update tidak diaktifkan
-            txtupdate.setEnabled(false);
+    private void txtIdPegawaiKeyReleased(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_txtIdPegawaiKeyReleased
+        try {
+            int idPegawai = Integer.parseInt(txtIdPegawai.getText());
+            Pegawai pegawai = new Pegawai().getById(idPegawai); // Ambil data pegawai dari database
+            if (pegawai != null) {
+                lblNamaPegawai.setText(pegawai.getNama()); // Tampilkan nama di label
+            } else {
+                lblNamaPegawai.setText("Pegawai tidak ditemukan");
+            }
+        } catch (NumberFormatException e) {
+            lblNamaPegawai.setText("ID Pegawai tidak valid");
         }
-    }// GEN-LAST:event_tblPeminjamanMouseClicked
+    }// GEN-LAST:event_txtIdPegawaiKeyReleased
 
-    private void txtupdateActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtupdateActionPerformed
-        int idPeminjaman = Integer.parseInt(txtIdpeminjaman.getText());
+    private void txtIdAnggotaKeyReleased(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_txtIdAnggotaKeyReleased
+        try {
+            int idAnggota = Integer.parseInt(txtIdAnggota.getText());
+            Anggota anggota = new Anggota().getById(idAnggota); // Ambil data anggota dari database
+            if (anggota != null) {
+                lblNamaAnggota.setText(anggota.getNama()); // Tampilkan nama di label
+            } else {
+                lblNamaAnggota.setText("Anggota tidak ditemukan");
+            }
+        } catch (NumberFormatException e) {
+            lblNamaAnggota.setText("ID Anggota tidak valid");
+        }
+    }// GEN-LAST:event_txtIdAnggotaKeyReleased
 
-        // Ambil nilai Tanggal Kembali dari field
-        String tanggalKembali = txtTanggalKembali.getText();
+    private void txtIdBukuKeyReleased(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_txtIdBukuKeyReleased
+        try {
+            int idBuku = Integer.parseInt(txtIdBuku.getText());
+            Buku buku = new Buku().getById(idBuku); // Ambil data buku dari database
+            if (buku != null) {
+                lblNamaBuku.setText(buku.getJudul()); // Tampilkan judul buku di label
+            } else {
+                lblNamaBuku.setText("Buku tidak ditemukan");
+            }
+        } catch (NumberFormatException e) {
+            lblNamaBuku.setText("ID Buku tidak valid");
+        }
+    }// GEN-LAST:event_txtIdBukuKeyReleased
 
-        // Ambil item pegawai dari combo box
-        Pegawai selectedPegawai = (Pegawai) cmbIdPegawai.getSelectedItem();
+    private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnConfirmActionPerformed
+        Peminjaman peminjaman = new Peminjaman();
+        peminjaman.setIdPeminjaman(Integer.parseInt(txtIdPeminjaman.getText()));
+        peminjaman.getPegawai().setIdPegawai(Integer.parseInt(txtIdPegawai.getText()));
+        peminjaman.getAnggota().setIdanggota(Integer.parseInt(txtIdAnggota.getText()));
+        peminjaman.getBuku().setIdbuku(Integer.parseInt(txtIdBuku.getText()));
 
-        // Buat instance Peminjaman dengan ID yang diambil
-        Peminjaman pin = new Peminjaman();
-        pin.setIdPeminjaman(idPeminjaman);
-        pin.setTanggalKembali(tanggalKembali);
-        pin.setPegawai(selectedPegawai);
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = today.format(formatter);
+        peminjaman.setTanggalPinjam(formattedDate);
+        peminjaman.setTanggalKembali(formattedDate);
 
-        // Panggil metode untuk menyimpan pembaruan ke database
-        pin.update();
+        peminjaman.save();
+        txtIdPeminjaman.setText(Integer.toString(peminjaman.getIdPeminjaman()));
         tampilkanData();
-        kosongkanForm();
+    }// GEN-LAST:event_btnConfirmActionPerformed
 
-        // Perbarui tampilan tabel atau beri umpan balik kepada pengguna
-        JOptionPane.showMessageDialog(this, "Tanggal Kembali dan Pegawai berhasil diperbarui!");
-        // TODO add your handling code here:
-    }// GEN-LAST:event_txtupdateActionPerformed
+    private void btnCariAnggotaActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnCariAnggotaActionPerformed
+        String[] kolom = { "ID Peminjaman", "Pegawai", "Anggota", "Buku", "Tanggal Pinjam" };
+        DefaultTableModel model = new DefaultTableModel(new Object[][] {}, kolom);
+        tblPeminjaman.setModel(model);
 
-    private void txtTanggalKembaliActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtTanggalKembaliActionPerformed
-        // TODO add your handling code here:
-    }// GEN-LAST:event_txtTanggalKembaliActionPerformed
+        String idAnggota = txtIdAnggota.getText().trim(); // Mengambil input dari txtIdAnggota
+        if (!idAnggota.isEmpty()) {
+            ArrayList<Peminjaman> list = new Peminjaman().getAll();
+            Object rowData[] = new Object[6];
 
-    private void tblPeminjamanMouseEntered(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_tblPeminjamanMouseEntered
-        // TODO add your handling code here:
-    }// GEN-LAST:event_tblPeminjamanMouseEntered
+            for (Peminjaman p : list) {
+                // Cek apakah id anggota cocok
+                if (String.valueOf(p.getAnggota().getIdanggota()).equals(idAnggota)) {
+                    rowData[0] = p.getIdPeminjaman();
+                    rowData[1] = p.getPegawai().getNama();
+                    rowData[2] = p.getAnggota().getNama();
+                    rowData[3] = p.getBuku().getJudul();
+                    rowData[4] = p.getTanggalPinjam();
+                    rowData[5] = p.getTanggalKembali() != null ? p.getTanggalKembali() : "-";
+                    model.addRow(rowData);
+                }
+            }
 
-    private void cmbIdPegawaiActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cmbIdPegawaiActionPerformed
-        // TODO add your handling code here:
-    }// GEN-LAST:event_cmbIdPegawaiActionPerformed
+            if (model.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(null, "Tidak ada data untuk ID Anggota: " + idAnggota);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Masukkan ID Anggota terlebih dahulu!");
+        }
+    }// GEN-LAST:event_btnCariAnggotaActionPerformed
 
     private void txtTanggalPinjamActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtTanggalPinjamActionPerformed
         // TODO add your handling code here:
@@ -659,39 +595,29 @@ public class FrmPeminjaman extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCariAng;
-    private javax.swing.JButton btnCariBuku;
-    private javax.swing.JButton btnHapus;
+    private javax.swing.JButton btnCariAnggota;
+    private javax.swing.JButton btnConfirm;
     private javax.swing.JButton btnSimpan;
-    private javax.swing.JButton btnTambahBaruu;
-    private javax.swing.JComboBox<String> cmbIdPegawai;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton7;
+    private javax.swing.JButton btnTambahBaru;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTree jTree1;
-    private javax.swing.JLabel lblJudulBuku;
+    private javax.swing.JTextArea jTextArea1;
+    private java.awt.Label label1;
     private javax.swing.JLabel lblNamaAnggota;
+    private javax.swing.JLabel lblNamaBuku;
+    private javax.swing.JLabel lblNamaPegawai;
     private javax.swing.JTable tblPeminjaman;
     private javax.swing.JTextField txtIdAnggota;
     private javax.swing.JTextField txtIdBuku;
-    private javax.swing.JTextField txtIdpeminjaman;
+    private javax.swing.JTextField txtIdPegawai;
+    private javax.swing.JTextField txtIdPeminjaman;
     private javax.swing.JTextField txtTanggalKembali;
     private javax.swing.JTextField txtTanggalPinjam;
-    private javax.swing.JButton txtupdate;
     // End of variables declaration//GEN-END:variables
 }
